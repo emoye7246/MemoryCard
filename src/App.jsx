@@ -1,27 +1,16 @@
 import {useState, useEffect } from 'react'
 import '/Users/elijahmoye/Desktop/myReact/MemoryCard/src/css/styles.css'
-import { Gameboard } from './Components/Gameboard/Gameboard'
+import '/Users/elijahmoye/Desktop/myReact/MemoryCard/src/Components/Gameboard/Gameboard.css'
+import { Navigation } from './Components/Nav/Navigation'
 
 
 export function App() {
 
   const [characters, updateCharacters] = useState([])
+  const [clickedCharacter, updateClickedCharacters] = useState([])
 
-  const shuffleArray = (characters) => {
-
-    for (let i = characters.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [characters[i], characters[j]] = [characters[j], characters[i]];
-    }
-
-    return characters
-
-  }
-
-  const handleShuffle = () => {
-
-    updateCharacters(shuffleArray(characters.slice()))
-  }
+  const [score, updateScore] = useState(0)
+  const [highScore, updateHighScore] = useState(score)
 
   useEffect(() => {
 
@@ -36,8 +25,10 @@ export function App() {
         const response = await fetch(`http://gateway.marvel.com/v1/public/characters?ts=${ts}&apikey=${api}&hash=${hash}&nameStartsWith=Spider`)
         await response.json().then((response) => {
         
-        updateCharacters(response.data.results)
-
+        
+        let data = response.data.results
+        console.log(response)
+        updateCharacters(data)
         })  
         
         
@@ -51,17 +42,124 @@ export function App() {
 
 }, [])
 
-  return (
-      <>
-        <div>Were Baaackkk</div>
+function shuffleArray(array){
 
-        <div>
-            <Gameboard cardInfo={characters} shuffle={handleShuffle}/> 
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+
+}
+
+const updateCount = () => {
+
+  updateScore(prevScore => prevScore + 1) 
+}
+const resetCount = () => {
+
+
+  updateScore(prevScore => prevScore = 0)
+}
+
+const clearArray = () => {
+
+  updateClickedCharacters([])
+}
+
+const highestScore = () => {
+
+  if(highScore < score){
+
+    updateHighScore(prevScore => score)
+  }else{
+
+    highScore
+  }
+
+}
+
+const winner = () => {
+
+  if(score === 20){
+
+    alert('You Win')
+    highestScore()
+    resetCount()
+    clearArray()
+    updateCharacters(shuffleArray(characters.slice()))
+
+
+  }
+  else{
+    score
+  }
+}
+ 
+const addItem = (item) => {
+
+  if(clickedCharacter.includes(item)){
+    
+    highestScore()
+    resetCount()
+    updateCharacters(shuffleArray(characters.slice()))
+    clearArray()
+
+  }else{
+
+    updateCount()
+    updateCharacters(shuffleArray(characters.slice()))
+    updateClickedCharacters(prevItem => [...prevItem, item])
+    winner()
+  }
+}
+
+
+
+return (
+
+  <>
+    <div id="App">
+
+      <div id="Nav">
+
+        <Navigation scores={score} highScores={highScore}/>
+        
+      </div>
+
+        <div className="headings">
+
+          <h2 id="title">With great power comes great memory</h2>
+          <h3><em>Rules: Dont click the same card twice GOODLUCK !</em></h3>
+          
         </div>
 
+        <div id="appBody">
 
-      </>
+          <div id='board'>
+            
+            {characters.map((character, i) => 
+                  
+                  (<>
 
-      
-      )
+                      <div className='cell' onClick={() => addItem(character.id)}>
+
+                            <img src={character.thumbnail['path'] + "." + character.thumbnail['extension']} alt="" height={'208px'} width={'208px'} id='images'/>
+                            <div className="rectangleHolder">
+
+                              <div className="characterName">{character.name}</div>
+                              
+                            </div>
+                      </div>
+
+                    </>
+                ))}
+          </div>
+
+        </div>
+
+    </div>
+  </>
+)
+
 }

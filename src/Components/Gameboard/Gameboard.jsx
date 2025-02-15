@@ -4,20 +4,17 @@ import { useState, useEffect } from 'react'
 
 export function Gameboard(prop){
 
+    const findCharacter = (e) => {
+
+        console.log(e.target.id)
+      }
 
 
-
-    return(
+    return (
 
         <>
-            <div id='board'>
-                {prop.cardInfo.map((character) => (
 
-                    <>
-                        <div className="cell" onClick={prop.shuffle}>{character.name}</div>
-                    </>
-                ))}
-            </div>       
+            
         </>
     )
 }
