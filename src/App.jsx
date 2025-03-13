@@ -1,6 +1,5 @@
 import {useState, useEffect } from 'react'
 import '/Users/elijahmoye/Desktop/myReact/MemoryCard/src/css/styles.css'
-import '/Users/elijahmoye/Desktop/myReact/MemoryCard/src/Components/Gameboard/Gameboard.css'
 import { Navigation } from './Components/Nav/Navigation'
 
 
@@ -8,6 +7,8 @@ export function App() {
 
   const [characters, updateCharacters] = useState([])
   const [clickedCharacter, updateClickedCharacters] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   const [score, updateScore] = useState(0)
   const [highScore, updateHighScore] = useState(score)
@@ -30,12 +31,16 @@ export function App() {
         console.log(response)
         updateCharacters(data)
         })  
+        setLoading(false)
+        setError(null)
         
         
       }
       catch(error){
         console.log(`This is not yet working because ${error}`)
       }     
+      setLoading(false)
+      setError(error)
     }
 
     fetchData()
@@ -121,11 +126,21 @@ return (
   <>
     <div id="App">
 
+
+
       <div id="Nav">
 
         <Navigation scores={score} highScores={highScore}/>
         
       </div>
+
+      {loading && <h2 id='loading'>Please wait while we find while we find the true Spider</h2>}
+
+        {error && (
+        <div id='loading'>
+            <h2>There was an Error fetching data please check connection and refresh browser</h2>
+        </div>
+        )}
 
         <div className="headings">
 
