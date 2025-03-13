@@ -1,5 +1,5 @@
 import {useState, useEffect } from 'react'
-import '/Users/elijahmoye/Desktop/myReact/MemoryCard/src/css/styles.css'
+import '/public/css/styles.css'
 import { Navigation } from './Components/Nav/Navigation'
 
 
