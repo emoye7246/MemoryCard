@@ -23,7 +23,7 @@ export function App() {
 
       try {
 
-        const response = await fetch(`http://gateway.marvel.com/v1/public/characters?ts=${ts}&apikey=${api}&hash=${hash}&nameStartsWith=Spider`)
+        const response = await fetch(`https://gateway.marvel.com/v1/public/characters?ts=${ts}&apikey=${api}&hash=${hash}&nameStartsWith=Spider`)
         await response.json().then((response) => {
         
         
