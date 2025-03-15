@@ -40,8 +40,6 @@ Challenge yourself to achieve the highest score!
 
 🎵 Sound Effects & Animations – Enhance game feel and interaction
 
-🏆 Scoreboard & High Scores – Track best performances
-
 📱 Mobile Optimization – Improve touch-based gameplay
 
 🔄 More Spider-Man Universes – Expand the character pool
